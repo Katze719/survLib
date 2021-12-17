@@ -2,49 +2,49 @@
 - Surveying_Library
 - Static_Library
 *******************************************************
-# Funktionen:
+# functions:
 
-- isDouble(String) 			            -> überprüft ob ein string konvertiebar zu einen Double ist
-- dist(Point, Point) 					-> berechnet die entfernung zwischen zwei punkten
-- is_near(Point, Point) 				-> wird benutzt um punkte zu vergleichen, die genauigkeit dafür kann beliebig geändert werden mit (#define IS_NEAR WERT)
-- sort(T) 								-> sortiert deinen std::vector oder array oder was auch immer du ihm gibst solange der Typ .size() besitzt und eine zahl returned
-- reverse(T) 							-> invertiert deine liste
-- print(T) 								-> verwendet std::cout mit einem zeilenumbruch am ende
-- printl(T) 							-> verwendet print(T) (siehe oben) um arrays auszugeben oder std::vectoren
-- intercept(Line, Line) 				-> berechnet den schnittpunkt von zwei Linien
-- area(std::vector<Point>) 				-> berechnet die fläche aus Punkten die aber Im- oder Gegen den Uhrzeigersinn sortiert sein müssen
-- polar_attachment(Point, Angle, Track)	-> errechnet einen neuen Punkt mit Winkel und strecke
+- isDouble(String) -> checks if a string is convertible to a double
+- dist(Point, Point) -> calculates the distance between two points
+- is_near(Point, Point) -> used to compare points, the precision can be changed with (#define IS_NEAR VALUE)
+- sort(T) -> sorts your std::vector or array or whatever you give it as long as it has type .size() and returns a number
+- reverse(T) -> inverts your list
+- print(T) -> uses std::cout with a line break at the end
+- printl(T) -> uses print(T) (see above) to output arrays or std::vectors
+- intercept(Line, Line) -> calculates the intersection of two lines
+- area(std::vector<Point>) -> calculates the area from points that have to be sorted clockwise or counterclockwise
+- polar_attachment(Point, Angle, Track) -> calculates a new point with angle and track
 *******************************************************
 
 # concepts:
 
-- iterable 								-> Typ muss .size() besitzen
-- Streamable 							-> Typ muss in einen std::ostream konvertierbar sein mit dem operator <<
+- iterable -> type must have .size()
+- Streamable -> type must be convertible to a std::ostream with the operator <<
 *******************************************************
 
-# Klassen:
+# classes:
 
-- Point 								-> besitzt x,y,z,index, konstruktor kann mit strings verwendet werden
-	- operator+ 						-> returned einen Punkt errechnet aus zwei Punkten
-	- operator+= 						-> fügt einem Punkt die werte eines anderen Punktes hinzu
-	- operator- 						-> returned einen Punkt errechnet aus zwei Punkten
-	- operator-= 						-> verringert einem Punkt die werte eines anderen Punktes hinzu
-	- operator< 						-> index < index
-	- operator> 						-> index > index
-	- operator<< 						-> gibt x,y,z,index aus in einem format
+- Point -> has x,y,z,index, constructor can be used with strings
+	- operator+ -> returned a point calculated from two points
+	- operator+= -> adds the values of another point to a point
+	- operator- -> returned a point calculated from two points
+	- operator-= -> decreases a point by the values of another point
+	- operator< -> index < index
+	- operator> -> index > index
+	- operator<< -> outputs x,y,z,index in a format
 
-- Line 									-> besteht aus 2 Punkten und einer Strecke
+- Line -> consists of 2 points and a distance
 
-- Direction_angle 						-> ist der richtungwinkel von einem Punkt zu einem anderem
-	- .get_value() 						-> returned den Winkel
-	- operator<< 						-> gibt den Winkel in GON aus
+- Direction_angle -> is the direction angle from one point to another point
+	- .get_value() -> returns the angle
+	- operator<< -> returns the angle in GON
 
-- Triangle 								-> allgemeines Dreieck
-	- .set_angles() 					-> rechnet die winkel
-	- .set_sites() 						-> rechnet die seiten
-	- .set_area() 						-> rechnet die Fläche
-	- .set_circumference() 				-> rechnet den Umfang
-	- .calc() 							-> führt die methoden .set_angle(), .set_sites(), .set_area(), .set_circumference() aus
+- Triangle -> general triangle
+	- .set_angles() -> calculates the angles
+	- .set_sites() -> calculates the sides
+	- .set_area() -> calculates the area
+	- .set_circumference() -> calculates the circumference
+	- .calc() -> executes the methods .set_angle(), .set_sites(), .set_area(), .set_circumference()
 
-- Square 								-> erbt von Triangle
+- Square -> inherits from Triangle
 	-
