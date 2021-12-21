@@ -25,9 +25,9 @@
 # classes:
 
 - Point -> has x,y,z,index, constructor can be used with strings
-	- operator+ -> returned a point calculated from two points
+	- operator+ -> returnes a point calculated from two points
 	- operator+= -> adds the values of another point to a point
-	- operator- -> returned a point calculated from two points
+	- operator- -> returnes a point calculated from two points
 	- operator-= -> decreases a point by the values of another point
 	- operator< -> index < index
 	- operator> -> index > index
