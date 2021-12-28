@@ -24,7 +24,7 @@ namespace surv {
 
 		//void set_sites() override;
 
-		inline void set_area() override { area = c_area(std::vector<Point>{ A, B, C, D }); }
+		inline void set_area() override { area = c_area(Points{ A, B, C, D }); }
 
 		void set_circumference() override { circumference = a + b + c + d; }
 

@@ -1,50 +1,55 @@
-# Surveying_Math
-- Surveying_Library
-- Static_Library
-*******************************************************
-# functions:
+# survLib
 
-- isDouble(String) -> checks if a string is convertible to a double
-- dist(Point, Point) -> calculates the distance between two points
-- is_near(Point, Point) -> used to compare points, the precision can be changed with (#define IS_NEAR VALUE)
-- sort(T) -> sorts your std::vector or array or whatever you give it as long as it has type .size() and returns a number
-- reverse(T) -> inverts your list
-- print(T) -> uses std::cout with a line break at the end
-- printl(T) -> uses print(T) (see above) to output arrays or std::vectors
-- intercept(Line, Line) -> calculates the intersection of two lines
-- area(std::vector<Point>) -> calculates the area from points that have to be sorted clockwise or counterclockwise
-- polar_attachment(Point, Angle, Track) -> calculates a new point with angle and track
-*******************************************************
+survLib is a library for surveyors and people working with DXF files.
 
-# concepts:
+## Installation
 
-- iterable -> type must have .size()
-- Streamable -> type must be convertible to a std::ostream with the operator <<
-*******************************************************
+Use the GitHub clone feature [clone](https://github.com/Katze719/survLib.git) to download survLib.
+simply include the header Surveying_Math.h and the corresponding lib from the x86 or x64 folder. 
 
-# classes:
 
-- Point -> has x,y,z,index, constructor can be used with strings
-	- operator+ -> returnes a point calculated from two points
-	- operator+= -> adds the values of another point to a point
-	- operator- -> returnes a point calculated from two points
-	- operator-= -> decreases a point by the values of another point
-	- operator< -> index < index
-	- operator> -> index > index
-	- operator<< -> outputs x,y,z,index in a format
+## getting started
 
-- Line -> consists of 2 points and a distance
+### let's quickly read in a DXF file
+reading in DXF files is multithread supported, if you have 30 files it creats 30 threads
 
-- Direction_angle -> is the direction angle from one point to another point
-	- .get_value() -> returns the angle
-	- operator<< -> returns the angle in GON
+```c++
+#include <Surveying_Math.h>
+#include <vector>
 
-- Triangle -> general triangle
-	- .set_angles() -> calculates the angles
-	- .set_sites() -> calculates the sides
-	- .set_area() -> calculates the area
-	- .set_circumference() -> calculates the circumference
-	- .calc() -> executes the methods .set_angle(), .set_sites(), .set_area(), .set_circumference()
+using namespace surv;
 
-- Square -> inherits from Triangle
-	-
+std::vector<std::string> File_Names = {"Test0.dxf","Test1.DXF","Test2.Dxf",...};
+DXF_STORAGE DXF_S(File_Names);
+```
+### and print them out in the console
+```c++
+printl(DXF_S.at(0).get_Entities());
+/* or use */
+printl(DXF_S.at("Test0.dxf").get_Entities());
+```
+### we can also convert them to points
+```c++
+Points PS; // std::vector<surv::Point>
+for (auto& elem : DXF.at(0).get_Entities())
+	PS.push_back(elem.to_Point());
+```
+### or let's say we have some points and we want to calculate the area
+first we have to store all points clockwise or counterclockwise in a std::vector.
+```c++
+Point P0(2,6,4);
+/* or with strings */
+Point P1("5","4","2");
+
+Points myPoints = {P0,P1,...};
+
+double area = c_area(myPoints);
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

@@ -40,16 +40,33 @@ namespace surv {
 	// print für alles das konvertierbar ist in
 	// einen std::ostream
 	template<Streamable T>
-	void print(T& var) {
+	void print(T var) {
 		std::cout << var << "\n";
 	}
 
 	// surv::print() nur als schleife für alles was
 	// die methode .size() besitzt
 	template<iterable T>
-	void printl(T& var) {
+	void printl(T var) {
 		for (auto& elem : var)
 			surv::print(elem);
+	}
+
+	// löscht eine variable die == t ist aus einem vector
+	template<typename T>
+	void delInV(std::vector<T>& v, const T& t) {
+		for (size_t i = 0; i < v.size(); i++)
+			if (v.at(i) == t)
+				v.erase(v.begin() + i);
+	}
+
+	// checkt ob eine variable in einem vector vorhanden ist
+	template <typename T>
+	bool isAvailInV(const std::vector<T>& v, const T& t) {
+		for (auto& elem : v)
+			if (elem == t)
+				return true;
+		return false;
 	}
 
 	// schnittpunktberechnen
@@ -57,9 +74,11 @@ namespace surv {
 
 	// berechnet die Fläche, punkte müssen in richtiger reihenfolge im vector stehen
 	// entweder im uhrzeigersinn oder gegen den uhrzeigersinn
-	double c_area(std::vector<Point> Ps);
+	double c_area(Points Ps);
 
 	// Pohlares-anhängen, winkel in GON angeben bitte
 	Point Polar_attachment(const Point& P1, const Angle& A, const Track& S);
+
+	enum class Type { undefined, KOR };
 
 }

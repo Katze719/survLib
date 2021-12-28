@@ -18,9 +18,6 @@
 #define gatan(x) (atan(x)*200/M_PI)
 #define gacos(x) (acos(x)*200/M_PI)
 
-#ifndef IS_NEAR
-#define IS_NEAR 1
-#endif // !IS_NEAR
 
 namespace surv {
 
@@ -30,6 +27,10 @@ namespace surv {
 	typedef double Coordinate;
 	// Strecke
 	typedef double Track;
+
+	__declspec(selectany) int IS_NEAR = 1;
+
+	inline void setprecision_IS_NEAR(const int& v) { IS_NEAR = v; }
 
 	__declspec(selectany) size_t g_index = 0;
 
@@ -43,23 +44,36 @@ namespace surv {
 		Coordinate z = 0;
 
 		// jeder punkt hat einen eigennen index der geändert werden kann
-		size_t index;
+		// index kann auch nur eine Punktnummer mit Buchstaben sein
+		// wen kein index mit angeführt wird, wird der index weiter geführt
+		std::string index;
 
-		Point() :index(g_index++) {}
+		std::string code;
+
+		Point() :index(std::to_string(g_index++)) {}
+
+
+
 
 		// 2D Punkt (x, y)
-		Point(const Coordinate& _x, const Coordinate& _y)
-			:x(_x), y(_y), index(g_index++)
+		inline Point(const Coordinate& _x, const Coordinate& _y)
+			: x(_x), y(_y), index(std::to_string(g_index++))
 		{}
+
+
+
 
 		// normal Punkt (x, y, z)
-		Point(const Coordinate& _x, const Coordinate& _y, const Coordinate& _z)
-			:x(_x), y(_y), z(_z), index(g_index++)
+		inline Point(const Coordinate& _x, const Coordinate& _y, const Coordinate& _z)
+			: x(_x), y(_y), z(_z), index(std::to_string(g_index++))
 		{}
 
+
+
+
 		// 2D Punkt mit Strings (x, y)
-		Point(const std::string& _x, const std::string& _y)
-			:index(g_index++)
+		inline Point(const std::string& _x, const std::string& _y)
+			: index(std::to_string(g_index++))
 		{
 			if (isDouble(_x) && isDouble(_y)) {
 				x = std::stod(_x);
@@ -69,9 +83,12 @@ namespace surv {
 				throw std::invalid_argument("can't create Point, this string is not convertable to double!");
 		}
 
+
+
+
 		// normal Punkt mit Strings (x, y, z)
-		Point(const std::string& _x, const std::string& _y, const std::string& _z)
-			:index(g_index++)
+		inline Point(const std::string& _x, const std::string& _y, const std::string& _z)
+			: index(std::to_string(g_index++))
 		{
 			if (isDouble(_x) && isDouble(_y) && isDouble(_z)) {
 				x = std::stod(_x);
@@ -81,6 +98,32 @@ namespace surv {
 			else
 				throw std::invalid_argument("can't create Point, this string is not convertable to double!");
 		}
+
+
+
+
+		// TODO
+		inline Point(const std::string& Pktn, const std::string& Pktc, const std::string& _x, const std::string& _y, const std::string& _z)
+			: index(Pktn), code(Pktc)
+		{
+			if (isDouble(_x) && isDouble(_y) && isDouble(_z)) {
+				x = std::stod(_x);
+				y = std::stod(_y);
+				z = std::stod(_z);
+			}
+			else
+				throw std::invalid_argument("can't create Point, this string is not convertable to double!");
+		}
+
+
+
+
+
+		/*
+		*
+		* Operators
+		*
+		*/
 
 		// operator +
 		inline Point operator+(const Point& P1) const {
@@ -102,16 +145,6 @@ namespace surv {
 			x -= P1.x; y -= P1.y; z -= P1.z;
 		}
 
-		// index > index_
-		inline bool operator>(const Point& P1) const {
-			return (index > P1.index) ? true : false;
-		}
-
-		// index < index_
-		inline bool operator<(const Point& P1) const {
-			return (index < P1.index) ? true : false;
-		}
-
 		// operator <<, für std::ostream
 		inline friend std::ostream& operator<<(std::ostream& os, const Point& P1) {
 			os << "\nx:\t" << std::to_string(P1.x) << "\ny:\t" << std::to_string(P1.y) << "\nz:\t" << std::to_string(P1.z) << "\nindex:\t" << P1.index;
@@ -119,13 +152,15 @@ namespace surv {
 		}
 	};
 
+	using Points = std::vector<Point>;
+
 	// berechnet die distanz zwischen 2 Punkten
 	Track dist(const Point& P1, const Point& P2);
 
 	// sagt ob punkte soziemlich die selben sind oder nicht
 	// um präzisere is_near werte zu bekommen:
-	// einfach IS_NEAR {WERT} definieren
+	// einfach surv::setprecision_IS_NEAR(WERT) definieren
 	// example:
-	// #define IS_NEAR 0.1 
+	// surv::setprecision_IS_NEAR(0.1); 
 	bool is_near(const Point& P1, const Point& P2);
 }

@@ -18,7 +18,7 @@ namespace surv {
 		return P;
 	}
 
-	double c_area(std::vector<Point> Ps)
+	double c_area(Points Ps)
 	{
 		double F = 0.0;
 		if (Ps.size() > 2) {
