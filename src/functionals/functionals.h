@@ -1,17 +1,22 @@
 #pragma once
+#ifndef functionals_H
+#define functionals_H
+
 #include "../Line/Line.h"
 #include "../Direction_angle/Direction_angle.h"
 namespace surv {
 
 	// erstellen einer [regel] für templates
 	template<typename T>
-	concept iterable = requires(T a) {
-		{a.size()};
+	concept Iterable = requires(T a) {
+		{a.size()} -> std::convertible_to<size_t>;
 	};
 
 	// sort(var), var muss die methode .size() haben
-	template<iterable Pakage>
+	template<Iterable Pakage>
 	void sort(Pakage& var) {
+		if (std::size(var) <= 0)
+			return;
 		for (size_t i = 0; i < std::size(var); i++) {
 			for (size_t ii = 0; ii < std::size(var); ii++) {
 				if (var[i] < var[ii]) {
@@ -24,7 +29,7 @@ namespace surv {
 	}
 
 	// invertiert eine liste, P muss .size() besitzen
-	template<iterable T>
+	template<Iterable T>
 	void reverse(T& P) {
 		auto v = P;
 		for (size_t i = 0; i < P.size(); i++)
@@ -46,7 +51,7 @@ namespace surv {
 
 	// surv::print() nur als schleife für alles was
 	// die methode .size() besitzt
-	template<iterable T>
+	template<Iterable T>
 	void printl(T var) {
 		for (auto& elem : var)
 			surv::print(elem);
@@ -63,7 +68,7 @@ namespace surv {
 	// checkt ob eine variable in einem vector vorhanden ist
 	template <typename T>
 	bool isAvailInV(const std::vector<T>& v, const T& t) {
-		for (auto& elem : v)
+		for (const auto& elem : v)
 			if (elem == t)
 				return true;
 		return false;
@@ -82,3 +87,4 @@ namespace surv {
 	enum class Type { undefined, KOR };
 
 }
+#endif // !functionals_H

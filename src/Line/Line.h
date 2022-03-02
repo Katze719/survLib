@@ -9,7 +9,7 @@ namespace surv {
 
 		Track s = 0;
 
-		Line() {}
+		Line() = default;
 
 		Line(const Point& start, const Point& end)
 			:A(start), B(end)

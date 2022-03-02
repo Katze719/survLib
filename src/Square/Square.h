@@ -11,7 +11,7 @@ namespace surv {
 
 		Angle delta = 0;
 
-		Square() {}
+		Square() = default;
 
 		Square(const Point& _A, const Point& _B, const Point& _C, const Point& _D)
 			:Triangle(_A, _B, _C), D(_D)

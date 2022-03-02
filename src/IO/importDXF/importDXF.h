@@ -1,6 +1,7 @@
 #pragma once
 #include "../importPoints/importPoints.h"
-#include "DXFStructs\Entitie.h"
+#include "DXFStructs/Entitie.h"
+#include "DXFStructs/Table.h"
 
 namespace surv {
 	// nicht fertig 
@@ -9,22 +10,25 @@ namespace surv {
 	enum class SECTION { undefined = 0, HEADER, TABLE, BLOCKS, ENTITIES, OBJECTS };
 
 	using Entities = std::vector<Entitie>;
+	using Tables = std::vector<Table>;
 
 	class importDXF
 	{
-	private:
 		using Lines = std::vector<std::string>;
-		using Tables = std::vector<std::string>;
 
 		std::ifstream ifs;
-		std::string line, str, name;
-		Lines* Vstr = new Lines;
-		Entities* Ents = new Entities;
-		Tables* Tabls = new Tables;
+		std::string line;
+		std::string str;
+		std::string name;
+		std::unique_ptr<Lines> Vstr = std::make_unique<Lines>();
+		std::unique_ptr<Entities> Ents = std::make_unique<Entities>();
+		std::unique_ptr<Tables> Tabls = std::make_unique<Tables>();
 		SECTION section = SECTION::undefined;
 
+		size_t size_objects = 0;
+
 		// ändert section wenn s ein SECTION keyword enthält -> check_for_section
-		void cfs(const std::string& s);
+		void cfs(std::string_view s);
 
 		// findet die entities
 		void search_for_ents(size_t& i);
@@ -32,23 +36,26 @@ namespace surv {
 		// findet die Grafikeigenschaft in den LineTypeTables
 		void search_for_LineTypeTables(size_t& i);
 
+		// zählt die anzahl der objekte
+		void count_objects();
+
 		// starting the process
 		void getting_file();
 
 
 	public:
 
-		inline Entities get_Entities() { return *Ents; }
-		inline Lines get_FileStrings() { return *Vstr; }
-		inline Tables get_Tables() { return *Tabls; }
-		inline std::string get_Name() { return name; }
+		inline Entities get_Entities() const { return *Ents; }
+		inline Lines get_FileStrings() const { return *Vstr; }
+		inline Tables get_Tables() const { return *Tabls; }
+		inline std::string get_Name() const { return name; }
+		inline size_t get_size_objects() const { return size_objects; }
 
-		importDXF() {}
-		inline void set_filename_and_start(const std::string& s) { ifs = std::ifstream(s); name = s; getting_file(); }
+		importDXF() = default;
+		inline void set_filename_and_start(const std::string& s) { ifs = std::ifstream(s); name = s; getting_file(); count_objects(); }
 
 
-		inline importDXF(const std::string& File) :ifs(File), name(File) { getting_file(); }
-		inline ~importDXF() { if (Vstr != nullptr) delete Vstr; if (Ents != nullptr) delete Ents; if (Tabls != nullptr) delete Tabls; }
+		inline explicit importDXF(const std::string& File) :ifs(File), name(File) { getting_file(); count_objects(); }
 	};
 #undef ON
 }

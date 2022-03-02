@@ -3,7 +3,7 @@
 namespace surv {
 #define ON(x) Vstr->at(i + x)
 
-	void importDXF::cfs(const std::string& s) {
+	void importDXF::cfs(std::string_view s) {
 		if (s.compare("HEADER") == 0)
 			section = SECTION::HEADER;
 		else if (s.compare("TABLE") == 0)
@@ -18,6 +18,8 @@ namespace surv {
 
 	void importDXF::getting_file() {
 		// getting the file
+		if (!ifs.good())
+			std::terminate();
 		while (!getline(ifs, line).eof()) {
 			std::istringstream(line) >> str;
 			Vstr->push_back(str);
@@ -38,6 +40,8 @@ namespace surv {
 				search_for_ents(i);
 				break;
 			case SECTION::OBJECTS:
+				break;
+			default:
 				break;
 			}
 		}
@@ -103,8 +107,59 @@ namespace surv {
 
 	void importDXF::search_for_LineTypeTables(size_t& i) {
 
-		if (ON(0).compare("AcDbLinetypeTableRecord") == 0)
-			Tabls->push_back(ON(2));
+		Table T;
+		bool found_one = false;
+
+		if (ON(0) == "0")
+			found_one = true;
+
+		for (int Code = -1; found_one == true && i < Vstr->size(); i++) {
+
+			cfs(ON(0));
+
+			if (ON(0).compare("AcDbLinetypeTableRecord") == 0) {
+				Table Tk;
+				Tk.C2 = ON(2);
+				Tabls->push_back(Tk);
+			}
+
+			if (isDouble(ON(0)))
+				Code = stoi(ON(0));
+			else
+				continue;
+
+			switch (Code) {
+			case 2:
+				T.C2 = ON(1);
+				break;
+			case 6:
+				T.C6 = ON(1);
+				break;
+			case 62:
+				T.C62 = ON(1);
+				break;
+			case 70:
+				T.C70 = ON(1);
+				break;
+			case 370:
+				T.C370 = ON(1);
+				break;
+			default:
+				break;
+			}
+
+			if (T.is_filled()) {
+				found_one = false;
+				Tabls->push_back(T);
+			}
+		}
+	}
+	void importDXF::count_objects() {
+		std::vector<std::string> handles;
+		for (const auto& elem : *Ents)
+			if (!isAvailInV(handles, elem.C330))
+				handles.push_back(elem.C330);
+		size_objects = handles.size();
 	}
 #undef ON
 }

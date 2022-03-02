@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------*\
 |MIT License																			|
 |																						|
-|Copyright (c) 2021 Paul Dorn															|
+|Copyright (c) 2022 Paul Dorn															|
 |																						|
 |Permission is hereby granted, free of charge, to any person obtaining a copy			|
 |of this software and associated documentation files (the "Software"), to deal			|
@@ -30,3 +30,4 @@
 #include "../src/IO/importPoints/exportPoints.h"
 #include "../src/IO/importDXF/importDXF.h"
 #include "../src/IO/DXF/DXF.h"
+#include "../src/logger/advancedLOG.h"

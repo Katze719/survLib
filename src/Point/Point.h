@@ -22,11 +22,11 @@
 namespace surv {
 
 	// Winkel
-	typedef double Angle;
+	using Angle = double;
 	// Koordinate
-	typedef double Coordinate;
+	using Coordinate = double;
 	// Strecke
-	typedef double Track;
+	using Track = double;
 
 	__declspec(selectany) int IS_NEAR = 1;
 
@@ -45,19 +45,19 @@ namespace surv {
 
 		// jeder punkt hat einen eigennen index der geändert werden kann
 		// index kann auch nur eine Punktnummer mit Buchstaben sein
-		// wen kein index mit angeführt wird, wird der index weiter geführt
-		std::string index;
+		// wen kein index mit angeführt wird, wird der standart index weiter geführt
+		std::string index = std::to_string(g_index++);
 
 		std::string code;
 
-		Point() :index(std::to_string(g_index++)) {}
+		Point() = default;
 
 
 
 
 		// 2D Punkt (x, y)
 		inline Point(const Coordinate& _x, const Coordinate& _y)
-			: x(_x), y(_y), index(std::to_string(g_index++))
+			: x(_x), y(_y)
 		{}
 
 
@@ -65,7 +65,7 @@ namespace surv {
 
 		// normal Punkt (x, y, z)
 		inline Point(const Coordinate& _x, const Coordinate& _y, const Coordinate& _z)
-			: x(_x), y(_y), z(_z), index(std::to_string(g_index++))
+			: x(_x), y(_y), z(_z)
 		{}
 
 
@@ -73,7 +73,6 @@ namespace surv {
 
 		// 2D Punkt mit Strings (x, y)
 		inline Point(const std::string& _x, const std::string& _y)
-			: index(std::to_string(g_index++))
 		{
 			if (isDouble(_x) && isDouble(_y)) {
 				x = std::stod(_x);
@@ -88,7 +87,6 @@ namespace surv {
 
 		// normal Punkt mit Strings (x, y, z)
 		inline Point(const std::string& _x, const std::string& _y, const std::string& _z)
-			: index(std::to_string(g_index++))
 		{
 			if (isDouble(_x) && isDouble(_y) && isDouble(_z)) {
 				x = std::stod(_x);
@@ -131,8 +129,9 @@ namespace surv {
 		}
 
 		// operator +=
-		inline void operator+=(const Point& P1) {
+		inline Point& operator+=(const Point& P1) {
 			x += P1.x; y += P1.y; z += P1.z;
+			return *this;
 		}
 
 		// operator -
@@ -141,8 +140,9 @@ namespace surv {
 		}
 
 		// operator -=
-		inline void operator-=(const Point& P1) {
+		inline Point& operator-=(const Point& P1) {
 			x -= P1.x; y -= P1.y; z -= P1.z;
+			return *this;
 		}
 
 		// operator <<, für std::ostream
@@ -159,8 +159,6 @@ namespace surv {
 
 	// sagt ob punkte soziemlich die selben sind oder nicht
 	// um präzisere is_near werte zu bekommen:
-	// einfach surv::setprecision_IS_NEAR(WERT) definieren
-	// example:
-	// surv::setprecision_IS_NEAR(0.1); 
+	// einfach surv::setprecision_IS_NEAR(WERT) verwenden
 	bool is_near(const Point& P1, const Point& P2);
 }

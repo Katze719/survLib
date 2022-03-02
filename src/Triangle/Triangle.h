@@ -22,7 +22,7 @@ namespace surv {
 
 		// bitte alle Punkte setzten und dannach die methode
 		// calc() verwenden um das Dreick zu vollenden
-		Triangle() {}
+		Triangle() = default;
 
 		// erstellt ein komplettes dreieck
 		Triangle(const Point& _A, const Point& _B, const Point& _C)
@@ -47,7 +47,7 @@ namespace surv {
 		// rechnet umfang
 		void virtual set_circumference() { circumference = a + b + c; }
 
-		virtual ~Triangle() {}
+		virtual ~Triangle() = default;
 	};
 
 }

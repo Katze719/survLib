@@ -11,7 +11,7 @@ namespace surv {
 		std::string file;
 		std::string line;
 
-		void kor(Points& Ps) {
+		inline void kor(Points& Ps) {
 			if (file.find(".kor") == std::string::npos && file.find(".KOR") == std::string::npos)
 				throw std::invalid_argument("wrong file ending!");
 			std::vector<std::string> words;
@@ -21,7 +21,7 @@ namespace surv {
 					words.push_back(word);
 			}
 			for (size_t i = 0; i < words.size(); i += 5)
-				Ps.push_back(Point(words.at(i + 2), words.at(i + 3), words.at(i + 4)));
+				Ps.emplace_back(words.at(i + 2), words.at(i + 3), words.at(i + 4));
 		}
 
 	public:
