@@ -10,7 +10,7 @@ survLib is a library for surveyors and people working with DXF files.
 
 ## getting started
 
-### let's quickly read in a DXF files
+### let's quickly read in some DXF files
 * reading in DXF files is multithread supported, if you have 30 files it creates 30 threads
 
 ```c++
