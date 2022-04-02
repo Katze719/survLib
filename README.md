@@ -7,10 +7,18 @@ survLib is a library for surveyors and people working with DXF files.
 * Use the GitHub clone feature [clone](https://github.com/Katze719/survLib.git) to download survLib.
 * simply include the header Surveying_Math.h and the corresponding lib from the x86 or x64 folder. 
 
+## WARNING
+
+the advancedLOG is not working in c++20, 
+because std::ofstream operator<< is not defined for std::chrono::time_point in c++20, 
+but is supported in c++latest
+
+![version](version.png?raw=true "Title")
 
 ## getting started
 
 ### let's quickly read in some DXF files
+
 * reading in DXF files is multithread supported, if you have 30 files it creates 30 threads
 
 ```c++

@@ -7,14 +7,14 @@ namespace surv {
 		Point A;
 		Point B;
 
-		Track s = 0;
-
 		Line() = default;
 
 		Line(const Point& start, const Point& end)
 			:A(start), B(end)
-		{
-			s = surv::dist(start, end);
+		{}
+
+		Track get_distance() const {
+			return surv::dist(A, B);
 		}
 	};
 }

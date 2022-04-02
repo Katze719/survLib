@@ -4,6 +4,7 @@
 
 #include "../Line/Line.h"
 #include "../Direction_angle/Direction_angle.h"
+#include "quicksort.h"
 namespace surv {
 
 	// erstellen einer [regel] für templates
