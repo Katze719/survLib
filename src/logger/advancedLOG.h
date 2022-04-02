@@ -28,7 +28,7 @@ namespace surv::log {
 		template<Streamable T>
 		void operator<<(const T& msg) {
 			if (comming_in >= Lv)
-				file << "[" + getLabel(comming_in) + "]" << std::chrono::system_clock::now() + std::chrono::hours(1) << "\t" << msg << "\n";
+				file << "[" + getLabel(comming_in) + "]" << std::chrono::time_point(std::chrono::system_clock::now() + std::chrono::hours(1)) << "\t" << msg << "\n";
 		}
 
 		advancedLOG& operator()(level _Lv) {

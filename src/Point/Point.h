@@ -31,17 +31,16 @@ namespace surv {
 	__declspec(selectany) int IS_NEAR = 1;
 
 	inline void setprecision_IS_NEAR(const int& v) { IS_NEAR = v; }
-
+	
 	__declspec(selectany) size_t g_index = 0;
 
 	// überprüft ob ein string zu einem double konvertierbar ist
 	bool isDouble(const std::string& s);
 
-	class Point {
-	public:
-		Coordinate x = 0;
-		Coordinate y = 0;
-		Coordinate z = 0;
+	struct Point {
+		Coordinate x{0.0};
+		Coordinate y{0.0};
+		Coordinate z = NULL;
 
 		// jeder punkt hat einen eigennen index der geändert werden kann
 		// index kann auch nur eine Punktnummer mit Buchstaben sein
@@ -51,8 +50,15 @@ namespace surv {
 		std::string code;
 
 		Point() = default;
+		
 
-
+		// strecke von Punkt zu Punkt
+		Track distance2D(const Point& p) const;
+		
+		Track distance3D(const Point& p) const;
+		
+		// richtungswinkel von diesem Punkt zu Punkt
+		Angle angle(const Point& p) const;
 
 
 		// 2D Punkt (x, y)
@@ -144,7 +150,7 @@ namespace surv {
 			x -= P1.x; y -= P1.y; z -= P1.z;
 			return *this;
 		}
-
+		
 		// operator <<, für std::ostream
 		inline friend std::ostream& operator<<(std::ostream& os, const Point& P1) {
 			os << "\nx:\t" << std::to_string(P1.x) << "\ny:\t" << std::to_string(P1.y) << "\nz:\t" << std::to_string(P1.z) << "\nindex:\t" << P1.index;
